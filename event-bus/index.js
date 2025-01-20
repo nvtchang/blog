@@ -8,12 +8,19 @@ app.use(bodyParser.json())
 const commentUrl = 'http://localhost:4001'
 const postUrl = 'http://localhost:4000'
 const events = []
+const queryUrl = 'http://localhost:4002'
+const moderationUrl = 'http://localhost:4002'
+
+const events = []
+
 app.post('/events', (req, res) => {
     //what ever inside the event, call the request
     const event = req.body
 
     events.push(event)
 
+    events.push(event)
+    
     axios.post(`${postUrl}/events`, event).catch((err) => {
         console.log(err.message);
     });
@@ -22,7 +29,11 @@ app.post('/events', (req, res) => {
         console.log(err.message);
     });
 
-    axios.post(`http://localhost:4002/events`, event).catch((err) => {
+    axios.post(`${queryUrl}/events`, event).catch((err) => {
+        console.log(err.message);
+    });
+    
+    axios.post(`${moderationUrl}/events`, event).catch((err) => {
         console.log(err.message);
     });
 
@@ -31,7 +42,10 @@ app.post('/events', (req, res) => {
     });
 
     res.send({ status: 'OK'})
-    
+})
+
+app.get('/events', (req, res) => {
+    res.send(events)
 })
 
 app.get('/events', (req, res) => {
